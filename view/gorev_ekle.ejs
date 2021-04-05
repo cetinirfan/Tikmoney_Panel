@@ -1,0 +1,72 @@
+<%- include('./src/header'); %>
+<%- include('./src/headerbar'); %>
+        <div id="content" class="main-content">
+                <div class="container">
+                    <div class="layout-px-spacing">
+                        <div class="row layout-top-spacing">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                                <div class="statbox widget box box-shadow">
+                                        <form action='/gorev/gorev_ekle/<%=find_gorev._id%>' method='POST' enctype="multipart/form-data">
+                                            <div id="fuSingleFile" class="col-lg-12 layout-spacing">
+                                                        <div class="custom-file-container" data-upload-id="myFirstImage">
+                                                            <label>Fotoğrafı Temizle <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">x</a></label>
+                                                            <label class="custom-file-container__custom-file" >
+                                                                <input name='image' id="image" type="file" class="custom-file-container__custom-file__custom-file-input" accept="image/*">
+                                                                <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                                                                <span class="custom-file-container__custom-file__custom-file-control"></span>
+                                                            </label>
+                                                            <div class="custom-file-container__image-preview"></div>
+                                                        </div>                
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="description">Görev Açıklama</label>
+                                                <input type="text" name="description" class="form-control" id="description" placeholder="Görev Açıklama Giriniz...">
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="link">Görev Linki</label>
+                                                <input type="text" name="link" class="form-control" id="link" placeholder="Görev Linki Giriniz...">
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="tikmoney">Verilecek Tikmoney</label>
+                                                <input type="text" name="tikmoney" class="form-control" id="tikmoney" placeholder="Verilecek Tikmoney Giriniz...">
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="inputDescription">Text Alanı Açıklama</label>
+                                                <input type="text" name="inputDescription" class="form-control" id="inputDescription" placeholder="Text Alanı Açıklama Giriniz...">
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="input">Text Alanı</label>
+                                                <input type="text" name="input" class="form-control" id="input" placeholder="Text Alanı Giriniz...">
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="exampleFormControlSelect1">Görev İcon</label>
+                                                <select
+                                                name="icon"
+                                                id="icon"
+                                                class="form-control"
+                                                id="exampleFormControlSelect1"
+                                                >
+                                                <option value="Belirtilmedi">İkon Seç</option>
+                                                <option value="logo-instagram">İnstagram</option>
+                                                <option value="logo-twitter">Twitter</option>
+                                                <option value="logo-facebook">Facebook</option>
+                                                <option value="logo-google-playstore">Google Play</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" name="action" class="mt-4 mb-4 btn btn-primary">EKLE</button>
+                                        </form>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                                <div class="statbox widget box box-shadow">
+                                    <p class="card-text"> İNSTAGRAM PROFİL: http://instagram.com/_u/HESAP_ADI </p>
+                                    <p class="card-text"> TWİTTER PROFİL: https://www.twitter.com/HESAP ADI </p>
+                                    <p class="card-text"> FACEBOOK PROFİL: https://www.facebook.com/HESAP ADI </p>
+                                    <p class="card-text"> GOOGLE PLAY: https://play.google.com/store/apps/details?id=İD BURAYA </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+<%- include('./src/footer'); %> 

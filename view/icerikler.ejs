@@ -1,0 +1,47 @@
+<%- include('./src/header'); %> <%- include('./src/headerbar'); %>
+
+<div id="content" class="main-content">
+  <div class="layout-px-spacing">
+    <div class="row layout-top-spacing" id="cancel-row">
+      <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+        <% if (message.length > 0 ) { %>
+          <div class="<%= message[1] %>"  role="alert"> 
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+              <%= message[0] %> 
+          </div>
+        <% } %>
+        <div class="widget-content widget-content-area br-6">
+          <div class="table-responsive mb-4 mt-4">
+            <table
+              id="html5-extension"
+              class="table table-hover non-hover"
+              style="width: 100%"
+            >
+              <thead>
+                <tr>
+                  <th>Ürün Resmi</th>
+                  <th>Ürün Açıklama</th>
+                  <th>Alınacak İçerik</th>
+                  <th>Ödenecek Tikmoney</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% find_list.forEach(function(list){ %>
+                <tr>
+                  <td><img src="http://localhost:7092<%= list.contentImage %>" width="35" height="35"></td>
+                  <td><%= list.description.slice(0, 20) %></td>
+                  <td><%= list.purchased %></td>
+                  <td><%= list.tikmoney %></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  END CONTENT AREA  -->
+  <%- include('./src/footer'); %>
+</div>

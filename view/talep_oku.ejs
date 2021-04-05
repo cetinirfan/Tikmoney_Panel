@@ -1,0 +1,32 @@
+<%- include('./src/header'); %>
+<%- include('./src/headerbar'); %>
+        <div id="content" class="main-content">
+            <div class="container">
+                <div class="container">
+                    <div class="row layout-top-spacing">
+                        <div class="col-lg-12 col-12 layout-spacing">
+                            <div class="statbox widget box box-shadow">
+                                <div class="widget-header">                                
+                                    <div class="row">
+                                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Talep Cevapla</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <form action='../../../talep/talep_oku/<%=find_talep._id%>' method='POST'>
+                                        <div class="form-group mb-4">
+                                            <label for="problem">Kullanıcı Talebi</label>
+                                            <textarea readonly class="form-control" id="problem" name="problem" rows="4" cols="50"><%= find_talep.problem%></textarea>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="solve">Talep Cevabı</label>
+                                            <textarea class="form-control" id="solve" name="solve" rows="4" cols="50"></textarea>
+                                        </div>
+                                        <button type="submit" name="action" class="mt-4 mb-4 btn btn-primary">GÖNDER</button>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+<%- include('./src/footer'); %> 
