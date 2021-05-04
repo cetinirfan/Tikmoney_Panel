@@ -9,8 +9,6 @@ app.use(require("morgan")("dev"));
 var sessiion = require('express-session');
 var flashh = require('connect-flash');
 
-
-
 app.engine('.ejs', ejs.__express);
 app.set('views', __dirname+'/view');
 
@@ -24,8 +22,6 @@ app.use(sessiion({
     saveUninitialized: false
 }));
 app.use(flashh());
-
-
 
 const db = require('./services/mongodb.js')();
 
@@ -50,16 +46,4 @@ app.use("/giris", require('./routes/giris.js'))
 app.use("/gorev", require('./routes/gorev.js'))
 
 var server = http.createServer(app);
-server.listen(7092);
-var io = require('socket.io')(server)
-let count=0;
-
-io.on('connection',socket =>{
-    count++
-
-    socket.on('disconnect',()=>{
-        count--
-    })
-})
-
-module.exports = count
+server.listen(7070);

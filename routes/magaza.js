@@ -3,8 +3,12 @@ const router = express.Router();
 require("moment/locale/tr");
 const verifyToken = require("../services/middleware/verify-token");
 const Store = require("../services/modals/Store");
+const StoreRequest = require("../services/modals/StoreRequest");
+const Users = require("../services/modals/Users");
 var multer = require("multer");
+const admin = require("firebase-admin");
 const fs = require("fs");
+var serviceAccount = require("./tikmoney-a6261-firebase-adminsdk-2dmpm-8455a8abb9.json");
 
 router.get("/kategoriler", verifyToken, (req, res) => {
     Store.find({}, (err, find_kategori) => {
@@ -135,4 +139,125 @@ router.post(
     );
   }
 );
+
+router.get("/yeni_odul_talepleri", verifyToken, (req, res) => {
+  StoreRequest.find({status:0}, (err, find_magaza) => {
+  if (err) {
+    return res.render("error.ejs");
+  }
+  res.render("yeni_odul_talepleri.ejs", {
+    find_magaza,
+      message : req.flash('message')
+  });
+});
+});
+
+router.get("/odul_talep_detay/:_id", verifyToken, (req, res) => {
+  StoreRequest.findOne({ _id: req.params._id }, (err, find_odul) => {
+    if (err) {
+      return res.render("error.ejs");
+    }
+
+    res.render("odul_detay.ejs", {
+      find_odul,
+      message : req.flash('message')
+    });
+  });
+});
+
+router.post("/odul_iade/:_id", verifyToken, (req, res) => {
+  StoreRequest.findOne({ _id: req.params._id }, (err, find_odul) => {
+      const userId = find_odul.userId;
+      const incTikmoney = find_odul.tikmoney;
+      if (err) {
+        return res.render("error.ejs");
+      }else{
+              Users.findOneAndUpdate(
+                { _id: userId },
+                {
+                  $inc: { tikmoney: incTikmoney}
+                },
+                (err, find_user) => {
+                  const NotToken = find_user.FirebaseToken
+                  StoreRequest.findOneAndUpdate({ _id: req.params._id },{
+                    $set: { status: 1}
+                  }, (err, find_kullanici) => {
+                    if (err) {
+                      return res.render("error.ejs");
+                    }else{
+                      if(find_user.notStatus===1){
+                        if (!admin.apps.length) {
+                          admin.initializeApp({
+                              credential: admin.credential.cert(serviceAccount)
+                            });
+                      }
+                      let payload = {
+                          notification:{
+                              title: 'Tikmoney',
+                              body: 'mesaj tikmoney panel deneme',
+                          }
+                      };
+                      admin.messaging().sendToDevice(NotToken,payload).then(function(ressponse){
+                        req.flash('message', ['Ürün Talebi Onaylandı.',"alert alert-success mb-4" ])
+                        res.redirect('/magaza/yeni_odul_talepleri')
+                      }).catch(function(err){
+                          res.json('err')
+                      })
+                      }else{
+                        req.flash('message', ['Tikmoney İade Edildi.',"alert alert-success mb-4" ])
+                        res.redirect('/magaza/yeni_odul_talepleri')
+                      }
+                    }
+                  });
+                  
+                });
+      }
+  });
+});
+
+router.post("/odul_onayla/:_id", verifyToken, (req, res) => {
+  StoreRequest.findOne({ _id: req.params._id }, (err, find_odul) => {
+    const userId = find_odul.userId;
+    if (err) {
+      return res.render("error.ejs");
+    }else{
+            Users.findOne(
+              { _id: userId },
+              (err, find_user) => {
+                const NotToken = find_user.FirebaseToken
+                StoreRequest.findOneAndUpdate({ _id: req.params._id },{
+                  $set: { status: 2}
+                }, (err, find_kullanici) => {
+                  if (err) {
+                    return res.render("error.ejs");
+                  }else{
+                    if(find_user.notStatus===1){
+                      if (!admin.apps.length) {
+                        admin.initializeApp({
+                            credential: admin.credential.cert(serviceAccount)
+                          });
+                    }
+                    let payload = {
+                        notification:{
+                            title: 'Tikmoney',
+                            body: 'mesaj tikmoney panel deneme',
+                        }
+                    };
+                    admin.messaging().sendToDevice(NotToken,payload).then(function(ressponse){
+                      req.flash('message', ['Ürün Talebi Onaylandı.',"alert alert-success mb-4" ])
+                      res.redirect('/magaza/yeni_odul_talepleri')
+                    }).catch(function(err){
+                        res.json('err')
+                    })
+                    }else{
+                      req.flash('message', ['Ödül Gönderimi Onaylandı.',"alert alert-success mb-4" ])
+                      res.redirect('/magaza/yeni_odul_talepleri')
+                    }
+                  }
+                });
+                
+              });
+    }
+});
+});
 module.exports = router;

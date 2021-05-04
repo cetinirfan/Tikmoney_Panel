@@ -239,9 +239,7 @@ router.post("/gorev_reddet/:_id", verifyToken, (req, res) => {
                 },
                 (err, find_user) => {
                   const NotToken = find_user.FirebaseToken
-                  if (err) {
-                    return res.render("error.ejs");
-                  }else{
+                  if(find_user.notStatus===1){
                     if (!admin.apps.length) {
                       admin.initializeApp({
                           credential: admin.credential.cert(serviceAccount)
@@ -259,7 +257,9 @@ router.post("/gorev_reddet/:_id", verifyToken, (req, res) => {
                   }).catch(function(err){
                       res.json('err')
                   })
-                    
+                  }else{
+                    req.flash('message', ['Görev Talebi Reddedildi.',"alert alert-success mb-4" ])
+                    res.redirect('/gorev/yeni_gorev_talepleri')
                   }
                 });
             }
